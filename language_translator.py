@@ -55,7 +55,7 @@ combo2.set("SELECT LANGUAGE")
 label2=Label(root,text="ENGLISH",font="segoe 30 bold",bg="white",width=18,bd=5,relief=GROOVE)
 label2.place(x=620,y=50)
 
-
+##comment check
 #firt frame
 f=Frame(root,bg="Black",bd=5)
 f.place(x=10,y=118,width=440,height=210)
