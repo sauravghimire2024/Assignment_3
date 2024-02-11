@@ -9,7 +9,7 @@ pygame.init()
 
 W, H = 820, 437
 win = pygame.display.set_mode((W, H))
-pygame.display.set_caption('Side Scroller')
+pygame.display.set_caption('Super Amigo')
 
 bg = pygame.image.load(os.path.join('images', 'bg.png')).convert()
 bgX = 0
