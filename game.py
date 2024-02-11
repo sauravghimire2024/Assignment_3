@@ -130,21 +130,6 @@ class spike(saw):
         return False
 
 
-# def updateFile():
-#     f = open('scores.txt', 'r')
-#     file = f.readlines()
-#     last = int(file[0])
-
-#     if last < int(score):
-#         f.close()
-#         file = open('scores.txt', 'w')
-#         file.write(str(score))
-#         file.close()
-
-#         return score
-
-#     return last
-
 def updateFile(score):
     default_score = '0'  # Default score if the file doesn't exist
     try:
@@ -165,68 +150,6 @@ def updateFile(score):
 
     return last
 
-
-# def endScreen():
-#     global pause, score, speed, obstacles
-#     pause = 0
-#     speed = 30
-#     obstacles = []
-
-#     run = True
-#     while run:
-#         pygame.time.delay(100)
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 run = False
-#                 pygame.quit()
-#             if event.type == pygame.MOUSEBUTTONDOWN:
-#                 run = False
-#                 runner.falling = False
-#                 runner.sliding = False
-#                 runner.jumpin = False
-
-#         win.blit(bg, (0, 0))
-#         largeFont = pygame.font.SysFont('comicsans', 80)
-#         lastScore = largeFont.render(
-#             'Best Score: ' + str(updateFile()), 1, (255, 255, 255))
-#         currentScore = largeFont.render(
-#             'Score: ' + str(score), 1, (255, 255, 255))
-#         win.blit(lastScore, (W/2 - lastScore.get_width()/2, 150))
-#         win.blit(currentScore, (W/2 - currentScore.get_width()/2, 240))
-#         pygame.display.update()
-#     score = 0
-
-# issues with game over function
-# def endScreen():
-#     global pause, score, speed, obstacles
-#     pause = 0
-#     speed = 30
-#     obstacles = []
-
-#     run = True
-#     while run:
-#         pygame.time.delay(100)
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 run = False
-#                 pygame.quit()
-#             if event.type == pygame.MOUSEBUTTONDOWN:
-#                 run = False
-#                 runner.falling = False
-#                 runner.sliding = False
-#                 runner.jumpin = False
-
-#         win.blit(bg, (0, 0))
-#         largeFont = pygame.font.SysFont('comicsans', 80)
-#         lastScore = largeFont.render(
-#             # Pass score to updateFile()
-#             'Best Score: ' + str(updateFile(score)), 1, (255, 255, 255))
-#         currentScore = largeFont.render(
-#             'Score: ' + str(score), 1, (255, 255, 255))
-#         win.blit(lastScore, (W/2 - lastScore.get_width()/2, 150))
-#         win.blit(currentScore, (W/2 - currentScore.get_width()/2, 240))
-#         pygame.display.update()
-#     score = 0
 
 def endScreen():
     global pause, score, speed, obstacles
