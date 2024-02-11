@@ -113,3 +113,253 @@ class saw(object):
             if rect[1] + rect[3] > self.hitbox[1]:
                 return True
         return False
+
+
+class spike(saw):
+    img = pygame.image.load(os.path.join('images', 'spike.png'))
+
+    def draw(self, win):
+        self.hitbox = (self.x + 10, self.y, 28, 315)
+        # pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
+        win.blit(self.img, (self.x, self.y))
+
+    def collide(self, rect):
+        if rect[0] + rect[2] > self.hitbox[0] and rect[0] < self.hitbox[0] + self.hitbox[2]:
+            if rect[1] < self.hitbox[3]:
+                return True
+        return False
+
+
+# def updateFile():
+#     f = open('scores.txt', 'r')
+#     file = f.readlines()
+#     last = int(file[0])
+
+#     if last < int(score):
+#         f.close()
+#         file = open('scores.txt', 'w')
+#         file.write(str(score))
+#         file.close()
+
+#         return score
+
+#     return last
+
+def updateFile(score):
+    default_score = '0'  # Default score if the file doesn't exist
+    try:
+        with open('scores.txt', 'r') as f:
+            file = f.readlines()
+            if file:  # Check if file is not empty
+                last = int(file[0])
+            else:
+                last = int(default_score)  # Set default score
+    except FileNotFoundError:  # Handle file not found error
+        last = int(default_score)  # Set default score
+
+    if last < int(score):
+        with open('scores.txt', 'w') as file:
+            file.write(str(score))
+
+        return score
+
+    return last
+
+
+# def endScreen():
+#     global pause, score, speed, obstacles
+#     pause = 0
+#     speed = 30
+#     obstacles = []
+
+#     run = True
+#     while run:
+#         pygame.time.delay(100)
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 run = False
+#                 pygame.quit()
+#             if event.type == pygame.MOUSEBUTTONDOWN:
+#                 run = False
+#                 runner.falling = False
+#                 runner.sliding = False
+#                 runner.jumpin = False
+
+#         win.blit(bg, (0, 0))
+#         largeFont = pygame.font.SysFont('comicsans', 80)
+#         lastScore = largeFont.render(
+#             'Best Score: ' + str(updateFile()), 1, (255, 255, 255))
+#         currentScore = largeFont.render(
+#             'Score: ' + str(score), 1, (255, 255, 255))
+#         win.blit(lastScore, (W/2 - lastScore.get_width()/2, 150))
+#         win.blit(currentScore, (W/2 - currentScore.get_width()/2, 240))
+#         pygame.display.update()
+#     score = 0
+
+# issues with game over function
+# def endScreen():
+#     global pause, score, speed, obstacles
+#     pause = 0
+#     speed = 30
+#     obstacles = []
+
+#     run = True
+#     while run:
+#         pygame.time.delay(100)
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 run = False
+#                 pygame.quit()
+#             if event.type == pygame.MOUSEBUTTONDOWN:
+#                 run = False
+#                 runner.falling = False
+#                 runner.sliding = False
+#                 runner.jumpin = False
+
+#         win.blit(bg, (0, 0))
+#         largeFont = pygame.font.SysFont('comicsans', 80)
+#         lastScore = largeFont.render(
+#             # Pass score to updateFile()
+#             'Best Score: ' + str(updateFile(score)), 1, (255, 255, 255))
+#         currentScore = largeFont.render(
+#             'Score: ' + str(score), 1, (255, 255, 255))
+#         win.blit(lastScore, (W/2 - lastScore.get_width()/2, 150))
+#         win.blit(currentScore, (W/2 - currentScore.get_width()/2, 240))
+#         pygame.display.update()
+#     score = 0
+
+def endScreen():
+    global pause, score, speed, obstacles
+    pause = 0
+    speed = 30
+    obstacles = []
+
+    run = True
+    while run:
+        pygame.time.delay(100)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mx, my = pygame.mouse.get_pos()
+                if W/2 - 100 <= mx <= W/2 + 100 and 250 <= my <= 350:  # Restart button clicked
+                    run = False
+                    runner.falling = False
+                    runner.sliding = False
+                    runner.jumping = False
+                    resetGame()  # Reset the game
+
+        win.blit(bg, (0, 0))
+        largeFont = pygame.font.SysFont('comicsans', 80)
+        lastScore = largeFont.render(
+            'Best Score: ' + str(updateFile(score)), 1, (255, 255, 255))
+        currentScore = largeFont.render(
+            'Score: ' + str(score), 1, (255, 255, 255))
+        gameOverText = largeFont.render("Game Over", 1, (255, 0, 0))
+        restartText = largeFont.render("Restart", 1, (255, 0, 0))
+        win.blit(gameOverText, (W/2 - gameOverText.get_width()/2, 80))
+        win.blit(lastScore, (W/2 - lastScore.get_width()/2, 250))
+        win.blit(currentScore, (W/2 - currentScore.get_width()/2, 350))
+        # pygame.draw.rect(win, (0, 0, 0), (W/2 - 100, 250, 200, 100))
+        win.blit(restartText, (W/2 - restartText.get_width()/2, 180))
+        pygame.display.update()
+    score = 0
+
+
+def resetGame():
+    global score, runner, obstacles, pause, fallSpeed
+    score = 0
+    runner = player(200, 313, 64, 64)
+    obstacles = []
+    pause = 0
+    fallSpeed = 0
+
+
+def redrawWindow():
+    largeFont = pygame.font.SysFont('comicsans', 30)
+    win.blit(bg, (bgX, 0))
+    win.blit(bg, (bgX2, 0))
+    text = largeFont.render('Score: ' + str(score), 1, (255, 255, 255))
+    runner.draw(win)
+    for obstacle in obstacles:
+        obstacle.draw(win)
+
+    win.blit(text, (700, 10))
+    pygame.display.update()
+
+    # modified by krishna
+    # Check if runner falls
+    if runner.falling:
+        endScreen()
+
+
+pygame.time.set_timer(USEREVENT+1, 500)
+pygame.time.set_timer(USEREVENT+2, 3000)
+speed = 30
+
+score = 0
+
+run = True
+runner = player(200, 313, 64, 64)
+
+obstacles = []
+pause = 0
+fallSpeed = 0
+
+while run:
+    if pause > 0:
+        pause += 1
+        if pause > fallSpeed * 2:
+            endScreen()
+
+    score = speed//10 - 3
+
+    for obstacle in obstacles:
+        if obstacle.collide(runner.hitbox):
+            runner.falling = True
+
+            if pause == 0:
+                pause = 1
+                fallSpeed = speed
+        if obstacle.x < -64:
+            obstacles.pop(obstacles.index(obstacle))
+        else:
+            obstacle.x -= 1.4
+
+    bgX -= 1.4
+    bgX2 -= 1.4
+
+    if bgX < bg.get_width() * -1:
+        bgX = bg.get_width()
+    if bgX2 < bg.get_width() * -1:
+        bgX2 = bg.get_width()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            run = False
+
+        if event.type == USEREVENT+1:
+            speed += 1
+
+        if event.type == USEREVENT+2:
+            r = random.randrange(0, 2)
+            if r == 0:
+                obstacles.append(saw(810, 310, 64, 64))
+            elif r == 1:
+                obstacles.append(spike(810, 0, 48, 310))
+
+    if runner.falling == False:
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
+            if not (runner.jumping):
+                runner.jumping = True
+
+        if keys[pygame.K_DOWN]:
+            if not (runner.sliding):
+                runner.sliding = True
+
+    clock.tick(speed)
+    redrawWindow()
